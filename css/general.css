@@ -1,0 +1,413 @@
+/* global variables 🚧 -------------------------------------------------------*/
+:root {
+  --darksquare-color: hsl(var(--hue), 73%, 65%);
+  --lightsquare-color: hsl(var(--hue), 90%, 82%);
+  --highlight-color-white: inset 0 0 20px 20px hsla(var(--hue), 33%, 50%, 0.75);
+  --highlight-color-black: inset 0 0 20px 20px hsla(var(--hue), 33%, 50%, 0.75);
+  --black-color: hsl(0, 0%, 10%);
+  --white-color: hsl(0, 0%, 100%);
+  --fake-black: hsl(0, 9%, 22%);
+  --fake-white: hsl(0, 0%, 96%);
+  --faker-white: hsl(0, 0%, 93%);
+  --hue: 0;
+}
+
+/* typical styling of a page ✔️ -----------------------------------------------*/
+body {
+  background-color: var(--fake-white);
+  font-family: "Courier New", monospace;
+  margin-left: 1.25rem;
+  margin-top: 1.25rem;
+  color: var(--black-color);
+}
+button {
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+}
+input {
+  font-family: "Courier New", monospace;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+
+/* Tree  info ✔️ -------------------------------------------------------------*/
+.treeinforev {
+  color: var(--darksquare-color);
+}
+
+/* bottom left links ✔️ -----------------------------------------------------*/
+#quicklinks {
+  position: absolute;
+  left: 1.25 rem;
+  bottom: 1.25rem;
+}
+/* logo on bottom right ✔️ ---------------------------------------------------*/
+#logo {
+  position: absolute;
+  right: 0rem;
+  bottom: 0.625rem;
+}
+
+/* index.html ✔️ --------------------------------------------------------------*/
+#topinfo {
+  display: none;
+  position: absolute;
+  right: 1.25rem;
+}
+#loginLink {
+  position: absolute;
+  right: 1.25rem;
+}
+
+/* calendar (index.html) ✔️ ----------------------------------------------------*/
+/* Cal-HeatMap CSS */
+
+.cal-heatmap-container {
+  display: block;
+}
+
+.graph-label {
+  fill: var(--black-color);
+  font-size: 14px;
+}
+
+/* .graph,
+.graph-legend rect {
+  shape-rendering: crispedges;
+} */
+
+.graph-rect {
+  fill: var(--faker-white);
+}
+
+/*
+Remove comment to apply this style to date with value equal to 0
+.q0
+{
+	background-color: #fff;
+	fill: #fff;
+	stroke: #ededed
+}
+*/
+
+.q1 {
+  fill: hsl(var(--hue), 0%, 80%);
+}
+
+.q2 {
+  fill: hsl(var(--hue), 50%, 70%);
+}
+
+.q3 {
+  fill: hsl(var(--hue), 50%, 60%);
+}
+
+.q4 {
+  fill: hsl(var(--hue), 50%, 50%);
+}
+
+.q5 {
+  fill: hsl(var(--hue), 50%, 40%);
+}
+
+.q6 {
+  fill: hsl(var(--hue), 50%, 30%);
+}
+
+rect.now {
+  stroke: var(--black-color);
+}
+
+.domain-background {
+  fill: none;
+  shape-rendering: crispedges;
+}
+
+/* .ch-tooltip {
+  padding: 10px;
+  background: var(--black-color);;
+  color: #bbb;
+  font-size: 12px;
+  line-height: 1.4;
+  width: 140px;
+  position: absolute;
+  z-index: 99999;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  display: none;
+  box-sizing: border-box;
+}
+
+.ch-tooltip::after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  content: "";
+  padding: 0;
+  display: "block";
+  bottom: -6px;
+  left: 50%;
+  margin-left: -6px;
+  border-width: 6px 6px 0;
+  border-top-color: #222;
+} */
+
+/* chessBoard (editor.html) 🚧 ---------------------------------------------------*/
+#chessBoardEditor {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+}
+
+.collapsible {
+  position: absolute;
+  width: 50%;
+  display: none;
+  top: 3rem;
+  padding: 1.25rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 10px;
+  backdrop-filter: blur(1px);
+}
+
+/*! chessboard.js v1.0.0 | (c) 2019 Chris Oakman | MIT License chessboardjs.com/license */
+.clearfix-7da63 {
+  clear: both;
+}
+
+.board-b72b1 {
+  border: 0.125rem solid var(--black-color);
+  box-sizing: content-box;
+}
+
+.square-55d63 {
+  float: left;
+  position: relative;
+
+  /* disable any native browser highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.white-1e1d7 {
+  background-color: var(--lightsquare-color);
+  color: var(--darksquare-color);
+}
+
+.black-3c85d {
+  background-color: var(--darksquare-color);
+  color: var(--lightsquare-color);
+}
+
+.highlight1-32417,
+.highlight2-9c5d2 {
+  box-shadow: inset 0 0 1px 1px var(--black-color);
+}
+
+.notation-322f9 {
+  cursor: default;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.6rem;
+  position: absolute;
+}
+
+.alpha-d2270 {
+  bottom: 0rem;
+  right: 0.1rem;
+}
+
+.numeric-fc462 {
+  top: 0.1rem;
+  left: 0.1rem;
+}
+
+/* Chess arrows --------------------------------------------------------------- */
+#board_wrapper {
+  position: relative;
+}
+
+#primary_canvas,
+#drawing_canvas,
+#board {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#board {
+  z-index: -1;
+}
+
+#primary_canvas,
+#drawing_canvas {
+  opacity: 0.8;
+  padding: 2px;
+}
+/* confetti ----------------------------------------------------------------------*/
+#confettiCanvas {
+  position: absolute;
+  left: 0rem;
+  top: 0rem;
+}
+
+/* login 🚧 -------------------------------------------------------------------- */
+#signUpLink,
+#forgotPassLink {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.6rem;
+}
+
+#colorBtn {
+  border: none;
+  padding: 10px 10px;
+  transform: translate(-5px, -5px);
+  cursor: pointer;
+}
+
+.signup {
+  display: none; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0rem;
+  top: 0rem;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.signup-content {
+  margin-top: 9rem;
+  margin-bottom: 5rem;
+  margin-left: 25rem;
+  position: absolute;
+  background-color: white;
+  padding: 2rem;
+  width: 30%;
+  box-shadow: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+/* The Close Button */
+.close {
+  background-color: #ffdcdc;
+  font-size: 2rem;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  border: none;
+  float: right;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#roll {
+  transform: translate(0px, -3px);
+}
+
+.whiteCloud {
+  background-color: var(--white-color);
+  border: 1px solid #d3d3d3;
+  border-radius: 1rem;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* profile ✔️ ----------------------------------------------------------------- */
+.roundRectangle {
+  width: 180px;
+  height: 30px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 30px;
+  margin-left: -40px;
+  z-index: -1;
+}
+.circleAvatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 25px;
+  transform: translate(-10px, 0);
+  z-index: -1;
+}
+
+/* Display Tree -------------------------------------------------*/
+.node {
+  cursor: pointer;
+}
+
+.overlay {
+  background-color: rgb(235, 235, 235);
+}
+
+.node circle {
+  fill: rgb(85, 32, 32);
+  stroke: rgb(180, 70, 70);
+  stroke-width: 1px;
+}
+
+.node text {
+  /* font-size: 12px; */
+}
+
+.link {
+  fill: none;
+  stroke: hsl(0, 0%, 75%);
+  stroke-width: 1px;
+}
+/*
+.ghostCircle.show {
+  display: block;
+}
+
+.ghostCircle,
+.activeDrag .ghostCircle {
+  display: none;
+}*/
+
+/* highlights ---------------------------------------- */
+.highlight-white {
+  box-shadow: var(--highlight-color-white);
+}
+.highlight-black {
+  box-shadow: var(--highlight-color-black);
+}
+
+#openingName {
+  position: absolute;
+  right: 25.5rem;
+  top: 1.25rem;
+}

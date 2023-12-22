@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Default Settings ✔️ -------------------------------------------------------------------------->
+    <title>mychesstree</title>
+    <meta charset="utf-8" />
+    <link
+      rel="shortcut icon"
+      type="image/jpg"
+      href="../img/favicon-32x32.png"
+    />
+    <link href="../css/general.css" rel="stylesheet" />
+    <!-------------------------------------------------------------------------------------------------->
+
+    <!-- Loads JQuery from CDN otherwise if down uses local file -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      !window.jQuery &&
+        document.write('<script src="../js/jquery-3.6.0.min.js"><\/script>');
+    </script>
+    <!-------------------------------------------------------------------------------------------------->
+
+    <!-- Chess ✔️ --------------------------------------------------------------------------------------->
+    <script src="/js/chessboard-1.0.0.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.css" integrity="sha512-KRrFrm+GAPOl6xxootmuQHKDoGiR2Gtifqd6XFUH++sluyhWui3vJCkmt0FN0k/H9TQn0f4sZFltC+XnQAKKvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+    <script src="/js/chess.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-------------------------------------------------------------------------------------------------->
+  </head>
+
+  <body>
+    <!-- Dice Chess ✔️ ----------------------------------------------------------------------------------->
+    <div id="dice" style="transform:translate(0,-20px)">
+      <table>
+        <tr>
+          <td><h2>Dice Chess&nbsp;&nbsp;</h2></td>
+          <td>
+            <button style="transform: translate(0, 0px)" id="roll">
+              Generate pieces
+            </button>
+          </td>
+          <td><button id="skip" disabled>Skip turn</button></td>
+        </tr>
+      </table>
+
+      <div id="images" style="transform: translate(0, -20px)"></div>
+    </div>
+
+    <script>
+      var sides = ["w", "b"];
+      var pieces = [
+        ["wB", "wK", "wN", "wP", "wQ", "wR"],
+        ["bB", "bK", "bN", "bP", "bQ", "bR"],
+      ];
+      var curr = [];
+      var rolls = 3;
+      var begintag =
+        '<td><img style="width:130px;border: 1px solid #555"src="../img/chesspieces/wikipedia/';
+      var endtag = '"></td>';
+
+      function getRandomNumber() {
+        return Math.floor(Math.random() * pieces[0].length);
+      }
+
+      function getEnemy() {
+        return sides[(sides.indexOf(game.turn()) + 1) % 2];
+      }
+
+      $(document).ready(function () {
+        $("#roll").click(function () {
+          var hasmove = false;
+          var inner = "";
+          for (var i = 0; i < rolls; i++) {
+            selection = pieces[sides.indexOf(game.turn())][getRandomNumber()];
+            curr.push(selection);
+            inner += begintag + selection + ".png" + endtag;
+          }
+          $("#images").html("<table><tr>" + inner + "</tr></table>");
+          document.getElementById("roll").disabled = true;
+          console.log(game.valid_moves());
+          for (var i = 0; i < game.valid_moves().length; i++) {
+            if (
+              curr.indexOf(
+                game.valid_moves()[i].color +
+                  game.valid_moves()[i].piece.toUpperCase()
+              ) != -1
+            ) {
+              hasmove = true;
+            }
+          }
+          if (!hasmove) {
+            document.getElementById("skip").disabled = false;
+          }
+        });
+        $("#skip").click(function () {
+          game.set_turn(getEnemy());
+          $("#images").html("<table><tr></tr></table>");
+          curr = [];
+          document.getElementById("roll").disabled = false;
+          document.getElementById("skip").disabled = true;
+          //updateStatus()
+        });
+      });
+    </script>
+    <!---------------------------------------------------------------------------------------------------->
+
+    <!-- Chessboard 🚧 -------------------------------------------------------------------------------->
+    <div
+      id="aboutUsBoard"
+      style="width: 350px; position: absolute; right: 1.25rem; top: 1.25rem"
+    ></div>
+
+    <script>
+      // --- Begin Example JS --------------------------------------------------------
+      // NOTE: this example uses the chess.js library:
+      // https://github.com/jhlywa/chess.js
+
+      var board = null;
+      var game = new Chess();
+      game.set_dice(true);
+      const whiteSquareGrey = "#a9a9a9";
+      const blackSquareGrey = "#696969";
+      var $status = $("#status");
+      var $fen = $("#fen");
+      var $pgn = $("#pgn");
+
+      function removeGreySquares() {
+        $("#aboutUsBoard .square-55d63").css("background", "");
+      }
+
+      function greySquare(square) {
+        var $square = $("#aboutUsBoard .square-" + square);
+
+        var background = whiteSquareGrey;
+        if ($square.hasClass("black-3c85d")) {
+          background = blackSquareGrey;
+        }
+
+        $square.css("background", background);
+      }
+
+      function onDragStart(source, piece, position, orientation) {
+        // do not pick up pieces if the game is over
+        //if (game.game_over()) return false
+
+        // only pick up pieces for the side to move
+        if (
+          (game.turn() === "w" && piece.search(/^b/) !== -1) ||
+          (game.turn() === "b" && piece.search(/^w/) !== -1)
+        ) {
+          return false;
+        }
+
+        // only pick up pieces that have been rolled
+        if (curr.indexOf(piece) == -1) {
+          return false;
+        }
+      }
+
+      function onDrop(source, target) {
+        removeGreySquares();
+
+        // see if the move is legal
+        var move = game.move({
+          from: source,
+          to: target,
+          promotion: "q", // NOTE: always promote to a queen for example simplicity,
+          legal: false,
+        });
+
+        // illegal move
+        if (move === null) return "snapback";
+
+        //updateStatus()
+
+        // reset the roll function after move is made
+        curr = [];
+        document.getElementById("roll").disabled = false;
+        $("#images").html("<table><tr></tr></table>");
+        turn = getEnemy();
+      }
+
+      function onMouseoverSquare(square, piece) {
+        // get list of possible moves for this square
+        var moves = game.moves({
+          square: square,
+          verbose: true,
+          legal: false,
+        });
+
+        // exit if there are no moves available for this square
+        //if (moves.length === 0) return
+
+        // exit if the piece has not been rolled
+        if (curr.indexOf(piece) == -1) return;
+
+        // highlight the square they moused over
+        greySquare(square);
+
+        // highlight the possible squares for this piece
+        for (var i = 0; i < moves.length; i++) {
+          greySquare(moves[i].to);
+        }
+      }
+
+      function onMouseoutSquare(square, piece) {
+        removeGreySquares();
+      }
+
+      // update the board position after the piece snap
+      // for castling, en passant, pawn promotion
+      function onSnapEnd() {
+        board.position(game.fen());
+      }
+
+      function updateStatus() {
+        var status = "";
+
+        var moveColor = "White";
+        if (game.turn() === "b") {
+          moveColor = "Black";
+        }
+
+        // checkmate?
+        if (game.in_checkmate()) {
+          status = "Game over, " + moveColor + " is in checkmate.";
+        }
+
+        // draw?
+        else if (game.in_draw()) {
+          status = "Game over, drawn position";
+        }
+
+        // game still on
+        else {
+          status = moveColor + " to move";
+
+          // check?
+          if (game.in_check()) {
+            status += ", " + moveColor + " is in check";
+          }
+        }
+
+        $status.html(status);
+      }
+
+      var config = {
+        draggable: true,
+        position: "start",
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onMouseoutSquare: onMouseoutSquare,
+        onMouseoverSquare: onMouseoverSquare,
+        onSnapEnd: onSnapEnd,
+      };
+      board = Chessboard("aboutUsBoard", config);
+
+      updateStatus();
+    </script>
+
+    <!---------------------------------------------------------------------------------------------------->
+
+    <div
+      id="sidelinks"
+      class="whiteCloud"
+      style="
+        padding: 1rem;
+        position: absolute;
+        top: 1.25rem;
+        width: 65%;
+        height: 80%;
+        display: none;
+        background-color: rgba(255, 255, 255);
+      "
+    >
+    • Roll the Dice<br />
+    • If there is no valid move press skip turn<br />
+    • If your pro, calculate chances<br />
+    • otherwise just have fun and yolo<br />
+    • Few bugs<br />
+    • Good Luck<br />
+      
+    </div>
+    <button
+      class="openbtn"
+      style="position: absolute; left:1.25rem; bottom: 1.25rem;"
+      onclick="document.getElementById('sidelinks').style.display === 'none' ? (document.getElementById('sidelinks').style.display = 'block') : (document.getElementById('sidelinks').style.display = 'none');"
+    >Tutorial?</button>
+
+    <!-- Logo ✔️ ----------------------------------------------------------------------------------------->
+    <a href="../index.html">
+      <img
+        id="logo"
+        src="../img/640x640logoTRANSPARENT.png"
+        alt="mychesstree logo"
+        width="120px"
+        height="120px"
+      />
+    </a>
+    <!---------------------------------------------------------------------------------------------------->
+  </body>
+</html>
